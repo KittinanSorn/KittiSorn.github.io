@@ -145,11 +145,7 @@ section { padding: 100px 24px; }
 }
 .project-card:hover { border-color: #444; }
 .project-card h4 { font-size: 1rem; margin-bottom: 4px; }
-.project-card .tech { font-size: .75rem; color: var(--text-muted); margin-bottom: 8px; }
 .project-card p { font-size: .85rem; color: var(--text-muted); }
-.project-card .links { margin-top: 14px; display: flex; gap: 16px; }
-.project-card .links a { font-size: .8rem; color: var(--text-muted); }
-.project-card .links a:hover { color: var(--accent); }
 
 /* ===== CONTACT ===== */
 .contact-row {
