@@ -3,11 +3,543 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Kitti Sorn — Portfolio & CV</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #0a0a0a;
+            --surface:   #141414;
+            --border:    #2a2a2a;
+            --text:      #e0e0e0;
+            --text-muted:#888;
+            --accent:    #f0f0f0;
+            --accent-dim:#666;
+            --radius:    12px;
+            --max-w:     960px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(10,10,10,.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .navbar .inner {
+            max-width: var(--max-w); margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; height: 56px;
+        }
+        .navbar .logo { font-weight: 700; font-size: 1.15rem; letter-spacing: -.02em; }
+        .navbar .logo span { color: var(--text-muted); font-weight: 400; }
+
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a { font-size: .875rem; color: var(--text-muted); transition: color .2s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        .menu-toggle {
+            display: none; background: none; border: none; color: var(--text);
+            font-size: 1.4rem; cursor: pointer;
+        }
+
+        /* ===== SECTIONS ===== */
+        section { padding: 100px 24px; }
+
+        .section-title {
+            font-size: .75rem; text-transform: uppercase; letter-spacing: .15em;
+            color: var(--text-muted); margin-bottom: 40px;
+        }
+        .section-title::before {
+            content: '// '; color: var(--accent-dim);
+        }
+
+        .container { max-width: var(--max-w); margin: 0 auto; }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            padding-top: 80px;
+        }
+        .hero .container { width: 100%; }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
+            font-weight: 800; letter-spacing: -.03em; line-height: 1.1;
+            color: var(--accent);
+        }
+        .hero h1 span { display: block; color: var(--text-muted); font-weight: 300; }
+
+        .hero .tagline {
+            font-size: 1.15rem; color: var(--text-muted); margin: 20px 0 32px;
+            max-width: 520px;
+        }
+        .hero .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 26px; border-radius: 999px; font-size: .9rem;
+            font-weight: 600; transition: all .25s; cursor: pointer;
+            border: 1.5px solid var(--border);
+        }
+        .btn-primary {
+            background: var(--accent); color: var(--bg); border-color: var(--accent);
+        }
+        .btn-primary:hover { background: #fff; }
+        .btn-outline { background: transparent; color: var(--text); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* ===== ABOUT ===== */
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
+        }
+        .about-text p { color: var(--text-muted); margin-bottom: 16px; }
+        .about-text p strong { color: var(--text); }
+
+        .quick-facts {
+            list-style: none; display: grid; gap: 12px;
+        }
+        .quick-facts li {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 18px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            font-size: .9rem;
+        }
+        .quick-facts li i { color: var(--text-muted); width: 18px; text-align: center; }
+
+        /* ===== CV / RESUME ===== */
+        .cv-block { margin-bottom: 48px; }
+
+        .cv-block h3 {
+            font-size: .8rem; text-transform: uppercase; letter-spacing: .12em;
+            color: var(--text-muted); margin-bottom: 20px; padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .timeline { display: grid; gap: 20px; }
+
+        .timeline-item {
+            display: grid; grid-template-columns: 160px 1fr; gap: 20px;
+            padding: 20px 0; border-bottom: 1px solid var(--border);
+        }
+        .timeline-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+        .timeline-date {
+            font-size: .8rem; color: var(--text-muted); padding-top: 2px;
+        }
+        .timeline-role  { font-weight: 700; font-size: 1.05rem; }
+        .timeline-place { color: var(--text-muted); font-size: .9rem; margin-bottom: 6px; }
+        .timeline-desc  { color: var(--text-muted); font-size: .875rem; }
+
+        /* Skills grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+        }
+        .skill-pill {
+            padding: 10px 16px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 999px;
+            font-size: .82rem; text-align: center; color: var(--text-muted);
+            transition: all .2s;
+        }
+        .skill-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* ===== PORTFOLIO ===== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 28px;
+            transition: border-color .25s, transform .25s;
+        }
+        .project-card:hover { border-color: var(--accent-dim); transform: translateY(-2px); }
+
+        .project-icon { font-size: 1.6rem; margin-bottom: 16px; }
+        .project-card h4 { font-size: 1.05rem; margin-bottom: 6px; }
+        .project-card .tech { font-size: .78rem; color: var(--text-muted); margin-bottom: 10px; }
+        .project-card p  { font-size: .875rem; color: var(--text-muted); }
+        .project-card .links { margin-top: 16px; display: flex; gap: 16px; }
+        .project-card .links a { font-size: .82rem; color: var(--text-muted); }
+        .project-card .links a:hover { color: var(--accent); }
+        .project-card .links a i { margin-right: 4px; }
+
+        /* ===== CONTACT ===== */
+        .contact-row {
+            display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start;
+        }
+        .contact-info { flex: 1; min-width: 240px; }
+        .contact-info p { color: var(--text-muted); margin-bottom: 20px; }
+        .contact-links { list-style: none; display: grid; gap: 10px; }
+        .contact-links a {
+            display: flex; align-items: center; gap: 10px; color: var(--text-muted);
+            font-size: .9rem; transition: color .2s;
+        }
+        .contact-links a:hover { color: var(--accent); }
+
+        .contact-form { flex: 1; min-width: 280px; display: grid; gap: 14px; }
+        .contact-form input, .contact-form textarea {
+            width: 100%; padding: 13px 16px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            color: var(--text); font-size: .9rem; font-family: inherit;
+            resize: vertical; outline: none; transition: border-color .2s;
+        }
+        .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent-dim); }
+        .contact-form textarea { min-height: 110px; }
+        .contact-form button { justify-self: start; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 1px solid var(--border); padding: 28px 24px;
+            text-align: center; font-size: .8rem; color: var(--text-muted);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .menu-toggle { display: block; }
+            .nav-links.open {
+                display: flex; flex-direction: column;
+                position: absolute; top: 56px; left: 0; right: 0;
+                background: var(--surface); border-bottom: 1px solid var(--border);
+                padding: 16px 24px; gap: 14px;
+            }
+            .about-grid { grid-template-columns: 1fr; gap: 32px; }
+            .timeline-item { grid-template-columns: 1fr; gap: 4px; }
+            .timeline-date { margin-bottom: 4px; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello There! My Name is Kitti Sorn</h1>
-    <h2>I'm a Software Engineer and a Web Developer</h2>
-    <p>Welcome to my portfolio! I'm passionate about creating efficient and user-friendly web applications.</p>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="inner">
+        <a href="#" class="logo">Kitti<span>Sorn</span></a>
+        <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#cv">CV</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="container">
+        <h1>
+            Hello, I'm<br>
+            <span>Kitti Sorn</span>
+        </h1>
+        <p class="tagline">
+            Software Engineer &amp; Web Developer — crafting clean, efficient, and
+            user-friendly digital experiences.
+        </p>
+        <div class="cta-row">
+            <a href="#cv" class="btn btn-primary">
+                <i class="fa-solid fa-file-lines"></i> View CV
+            </a>
+            <a href="#contact" class="btn btn-outline">
+                <i class="fa-solid fa-paper-plane"></i> Get in Touch
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+    <div class="container">
+        <p class="section-title">About Me</p>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>
+                    I'm a <strong>Software Engineer &amp; Web Developer</strong> with a passion for
+                    building robust, scalable, and intuitive applications. I thrive at the intersection
+                    of design and engineering — where clean architecture meets thoughtful user experience.
+                </p>
+                <p>
+                    With hands-on experience across the full stack, I enjoy turning complex problems
+                    into simple, elegant solutions. I believe great software is built on clarity,
+                    maintainability, and a deep understanding of the people who use it.
+                </p>
+                <p>
+                    When I'm not coding, you'll find me exploring new technologies, contributing to
+                    open-source projects, or refining my craft through continuous learning.
+                </p>
+            </div>
+            <ul class="quick-facts">
+                <li><i class="fa-solid fa-location-dot"></i> Bangkok, Thailand</li>
+                <li><i class="fa-solid fa-briefcase"></i> Software Engineer</li>
+                <li><i class="fa-solid fa-graduation-cap"></i> B.Sc. Computer Science</li>
+                <li><i class="fa-solid fa-code"></i> Full-Stack Developer</li>
+                <li><i class="fa-solid fa-language"></i> Thai (Native), English (Fluent)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CV / RESUME ===== -->
+<section id="cv">
+    <div class="container">
+        <p class="section-title">Curriculum Vitae</p>
+
+        <!-- Experience -->
+        <div class="cv-block">
+            <h3>Work Experience</h3>
+            <div class="timeline">
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2023 — Present</div>
+                    <div>
+                        <div class="timeline-role">Software Engineer</div>
+                        <div class="timeline-place">Company Name — Bangkok, Thailand</div>
+                        <div class="timeline-desc">
+                            Designed and developed full-stack web applications serving thousands of
+                            users. Led migration of legacy front-end to React, improving performance by
+                            40%. Collaborated cross-functionally to define and ship new features.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2021 — 2023</div>
+                    <div>
+                        <div class="timeline-role">Junior Developer</div>
+                        <div class="timeline-place">Startup Co. — Remote</div>
+                        <div class="timeline-desc">
+                            Built and maintained RESTful APIs with Node.js and Express. Developed
+                            responsive UI components with Vue.js. Implemented CI/CD pipelines reducing
+                            deployment time by 60%.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2020 — 2021</div>
+                    <div>
+                        <div class="timeline-role">Intern — Frontend Developer</div>
+                        <div class="timeline-place">Tech Agency — Bangkok, Thailand</div>
+                        <div class="timeline-desc">
+                            Assisted in building client websites using HTML, CSS, and JavaScript.
+                            Gained foundational experience in responsive design and cross-browser
+                            compatibility.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Education -->
+        <div class="cv-block">
+            <h3>Education</h3>
+            <div class="timeline">
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2016 — 2020</div>
+                    <div>
+                        <div class="timeline-role">Bachelor of Science in Computer Science</div>
+                        <div class="timeline-place">University Name — Bangkok, Thailand</div>
+                        <div class="timeline-desc">
+                            GPA 3.5 / 4.0. Relevant coursework: Data Structures &amp; Algorithms,
+                            Software Engineering, Database Systems, Web Development.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="cv-block">
+            <h3>Technical Skills</h3>
+            <div class="skills-grid">
+                <span class="skill-pill">JavaScript</span>
+                <span class="skill-pill">TypeScript</span>
+                <span class="skill-pill">React</span>
+                <span class="skill-pill">Vue.js</span>
+                <span class="skill-pill">Node.js</span>
+                <span class="skill-pill">Express</span>
+                <span class="skill-pill">HTML5 / CSS3</span>
+                <span class="skill-pill">Tailwind CSS</span>
+                <span class="skill-pill">PostgreSQL</span>
+                <span class="skill-pill">MongoDB</span>
+                <span class="skill-pill">Git &amp; GitHub</span>
+                <span class="skill-pill">Docker</span>
+                <span class="skill-pill">REST APIs</span>
+                <span class="skill-pill">GraphQL</span>
+                <span class="skill-pill">Figma</span>
+                <span class="skill-pill">CI/CD</span>
+            </div>
+        </div>
+
+        <!-- Download CV -->
+        <div style="margin-top: 24px;">
+            <a href="#" class="btn btn-outline" onclick="window.print(); return false;">
+                <i class="fa-solid fa-download"></i> Print / Download CV
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== PORTFOLIO ===== -->
+<section id="portfolio">
+    <div class="container">
+        <p class="section-title">Selected Projects</p>
+        <div class="projects-grid">
+
+            <div class="project-card">
+                <div class="project-icon">🛒</div>
+                <h4>E-Commerce Platform</h4>
+                <div class="tech">React · Node.js · PostgreSQL</div>
+                <p>Full-featured online store with cart, checkout, and admin dashboard. Serves
+                    5,000+ monthly active users.</p>
+                <div class="links">
+                    <a href="#"><i class="fa-brands fa-github"></i> Source</a>
+                    <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">📊</div>
+                <h4>Analytics Dashboard</h4>
+                <div class="tech">Vue.js · D3.js · Express</div>
+                <p>Real-time data visualization dashboard for tracking key business metrics with
+                    interactive charts.</p>
+                <div class="links">
+                    <a href="#"><i class="fa-brands fa-github"></i> Source</a>
+                    <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">✅</div>
+                <h4>Task Manager App</h4>
+                <div class="tech">TypeScript · React · Firebase</div>
+                <p>Collaborative task management tool with real-time sync, drag-and-drop, and
+                    team workspaces.</p>
+                <div class="links">
+                    <a href="#"><i class="fa-brands fa-github"></i> Source</a>
+                    <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">🌐</div>
+                <h4>REST API Microservices</h4>
+                <div class="tech">Node.js · Docker · MongoDB</div>
+                <p>Scalable microservice architecture with API gateway, authentication service,
+                    and containerized deployments.</p>
+                <div class="links">
+                    <a href="#"><i class="fa-brands fa-github"></i> Source</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">🎨</div>
+                <h4>Portfolio Generator</h4>
+                <div class="tech">Next.js · Tailwind CSS · MDX</div>
+                <p>Static site generator for developer portfolios. Markdown-driven with
+                    automatic SEO and responsive layouts.</p>
+                <div class="links">
+                    <a href="#"><i class="fa-brands fa-github"></i> Source</a>
+                    <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">💬</div>
+                <h4>Real-Time Chat</h4>
+                <div class="tech">Socket.io · React · Node.js</div>
+                <p>Instant messaging app supporting group chats, file sharing, and message
+                    search with end-to-end encryption.</p>
+                <div class="links">
+                    <a href="#"><i class="fa-brands fa-github"></i> Source</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+    <div class="container">
+        <p class="section-title">Get in Touch</p>
+        <div class="contact-row">
+
+            <div class="contact-info">
+                <p>
+                    I'm currently open to new opportunities and collaborations.
+                    Whether you have a project idea, a question, or just want to say hello —
+                    feel free to reach out!
+                </p>
+                <ul class="contact-links">
+                    <li>
+                        <a href="mailto:kitti@example.com">
+                            <i class="fa-solid fa-envelope"></i> kitti@example.com
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/KittiSorn" target="_blank" rel="noopener">
+                            <i class="fa-brands fa-github"></i> github.com/KittiSorn
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://linkedin.com/in/kittisorn" target="_blank" rel="noopener">
+                            <i class="fa-brands fa-linkedin"></i> linkedin.com/in/kittisorn
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa-solid fa-location-dot"></i> Bangkok, Thailand
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <form class="contact-form" onsubmit="alert('Thanks for reaching out! I\'ll get back to you soon.'); return false;">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <input type="text" placeholder="Subject">
+                <textarea placeholder="Your Message..." required></textarea>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-paper-plane"></i> Send Message
+                </button>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <p>&copy; 2026 Kitti Sorn. Built with &#10084; and clean code.</p>
+</footer>
+
 </body>
 </html>
